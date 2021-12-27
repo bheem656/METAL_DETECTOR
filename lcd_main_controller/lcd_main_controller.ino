@@ -100,6 +100,7 @@ void loop()
     in++;
     flag_mst = 0;
     flag_slv = 0;
+    lcd_print();
     Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
   }
 
@@ -110,6 +111,7 @@ void loop()
     out++;
     flag_mst = 0;
     flag_slv = 0;
+    lcd_print();
     Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
   }
 
