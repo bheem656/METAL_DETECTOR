@@ -35,31 +35,13 @@ void  master_isr()
 {
   //out++;
   flag_mst = 1;
-////noInterrupts();
-//detachInterrupt(digitalPinToInterrupt(slave_pin));
-//  out++;
-//  while(millis() - prvtMillis_mst <= interval);
-//  prvtMillis_mst = millis();  
-//attachInterrupt(digitalPinToInterrupt(slave_pin), master_isr, HIGH);
- 
-
- 
  }
 
 
 void  slave_isr()
   {
-flag_slv = 1;
-   // in++;
-////noInterrupts();
-//detachInterrupt(digitalPinToInterrupt(master_pin));
-//while(millis() - prvtMillis_mst <= interval);
-//  in++;
-//  prvtMillis_mst = millis();  
-// attachInterrupt(digitalPinToInterrupt(master_pin), master_isr, HIGH);
-  
+    flag_slv = 1;  
   }
-
  
 void setup()
 {
@@ -67,23 +49,20 @@ void setup()
   pinMode(master_pin, INPUT_PULLUP);
   pinMode(slave_pin, INPUT_PULLUP); 
 
-  lcd.begin(16, 2);
-  delay(1000);
+ // lcd.begin(16, 2);
+  //delay(1000);
   attachInterrupt(digitalPinToInterrupt(master_pin), master_isr, CHANGE);
   attachInterrupt(digitalPinToInterrupt(slave_pin), slave_isr, CHANGE);
-//  in = 0;
-//  out = 0;
-  
-//   in = 0;
-//  out = 0;
+
    lcd_default();
-   delay(5000);
+   //delay(2000);
+   
      flag_slv = 0;
-  flag_mst = 0;
+     flag_mst = 0;
+     lcd_print();
 }
 
- uint8_t timeout = 0;
- uint8_t ff = 1;
+
 void loop()
 {
 //
@@ -93,15 +72,41 @@ void loop()
 //  Serial.print("slave_pin :");
 //  Serial.println(digitalRead(slave_pin));
 
+
+//while((in == 0) && (out == 0))
+//{
+//    if(flag_slv)
+//    {
+//      in++;
+//      lcd_print_data();  
+//      //delay(200);
+//      flag_slv = 0;
+//  
+//    }
+//  
+//      if(flag_mst)
+//    {
+//      out++;
+//      lcd_print_data();  
+//     // delay(200);
+//      flag_mst = 0;
+//  
+//    }
+//   
+//  
+//  }
+
+
     if(flag_slv)
   {
     prvtMillis_mst = millis();
     while((millis() - prvtMillis_mst) <= interval);
     in++;
+//    lcd_print();
     flag_mst = 0;
     flag_slv = 0;
-    lcd_print();
-    Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
+    
+    //Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
   }
 
   if(flag_mst)
@@ -109,107 +114,40 @@ void loop()
     prvMillis_slv = millis();
     while((millis() - prvMillis_slv) <= interval);
     out++;
+
+//    lcd_print();
     flag_mst = 0;
     flag_slv = 0;
-    lcd_print();
-    Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
+    
+   // Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
   }
 
-// flag_slv = 0;
-//  flag_mst = 0;
-  
-//  if(flag_slv)
-//  {
-//    
-//      prvtMillis_mst = millis();
-//      while(millis() - prvtMillis_mst <= 1000) // 2000 -2000
-//      {
-//        if(flag_mst)
-//        {
-//          in++;
-//          flag_slv = 0;
-//           flag_mst = 0;
-//          break;
-//          }
-//        if(millis() - prvtMillis_mst >= 1000)
-//        {
-//          timeout = 1;
-//           flag_slv = 0;
-//           flag_mst = 0;
-//          break;
-//          }         
-//          
-//        }
-//      if(timeout )
-//        {
-//          out++;  
-//           flag_slv = 0;
-//           flag_mst = 0;
-//          timeout = 0;        
-//          }        
-//           flag_slv = 0;
-//           flag_mst = 0;
-//     lcd_print();
-//    Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
-//    }
-//
-//   if(flag_mst)
-//   {
-//
-//      prvtMillis_mst = millis();
-//      while(millis() - prvtMillis_mst <= 1000) // 2000 -2000
-//      {
-//        if(flag_slv)
-//        {
-//          out++;
-//                     flag_slv = 0;
-//           flag_mst = 0;
-//          break;
-//          }
-//        if(millis() - prvtMillis_mst >= 1000)
-//        {
-//          timeout = 1;
-//                     flag_slv = 0;
-//           flag_mst = 0;
-//          break;
-//          }         
-//          
-//        }
-//      if(timeout )
-//        {
-//          in++;  
-//                     flag_slv = 0;
-//           flag_mst = 0;
-//          timeout = 0;        
-//          } 
-////    out++;
-////    while(millis() - prvMillis_mst <= interval);
-////   //delay(interval);
-////   flag_slv = 0;
-//
-//  lcd_print();
-//   Serial.print("TOTAL : "); Serial.print(in+out); Serial.print("  --- >>>  "); Serial.print("IN : "); Serial.print(in); Serial.print("  ||  "); Serial.print("OUT : "); Serial.println(out);  
-//    }
+lcd_print_data();  
+//lcd_print();
 
-  flag_slv = 0;
-  flag_mst = 0;
-  
-
-
-if(ff)
-{
-  
-  ff = 0;
-   in = 0;
-  out = 0;
-  lcd_print();
-  }
-// delay(500);
 }
 
 
 
 /************************** LCD function *****************************/
+
+void lcd_print_data()
+{
+
+  //lcd.clear();
+  lcd.setCursor(6,1);
+  lcd.print(in);
+
+  lcd.setCursor(6,2);
+  lcd.print(out);
+  
+
+//  count= count_in-count_out;
+  lcd.setCursor(6,3);
+  lcd.print(in+out);
+
+}
+
 
 void lcd_print()
 {
@@ -232,6 +170,7 @@ void lcd_print()
   lcd.print(in+out);
 
 }
+
 
 void lcd_default()
 {
