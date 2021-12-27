@@ -5,7 +5,7 @@
 
 
 int IRpin=11; // IR Sensor  pin
-int io = 10; // pin connect to lcd controller
+int io = 2; // pin connect to lcd controller
 
 volatile bool state;
 IRrecv IR(IRpin);
@@ -23,14 +23,15 @@ decode_results cmd;
 
 void setup() {
 //  Wire.begin(); 
-//  Serial.begin(9600);
+  Serial.begin(9600);
 //  pinMode(ledr,OUTPUT);
 //  pinMode(ledg,OUTPUT);
-//  pinMode(io,OUTPUT);
+  pinMode(io,OUTPUT);
 //  digitalWrite(io,0);
 //  digitalWrite(ledr, 1);
 //  delay(500);
 //  digitalWrite(ledr,0);
+digitalWrite(io,HIGH);
 IR.enableIRIn();
   delay(500);
   
@@ -43,14 +44,21 @@ void loop() {
 
     }
    
-  // state= !state;
+  state= !state;
   count ++;
-  digitalWrite(io,HIGH);
+
+//    Serial.print("STATE:  ");
+//  Serial.println(state);
+  digitalWrite(io,state);
+
+  
+//  Serial.print("IO STATE :");
+//  Serial.println(digitalRead(io));
   
   Serial.print("SLAVE Detected :  ");
   Serial.println(count);
    delay(400);
-  digitalWrite(io,LOW);
+//  digitalWrite(io,HIGH);
    Serial.println();
 
  IR.resume();
