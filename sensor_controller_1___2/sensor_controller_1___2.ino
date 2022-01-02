@@ -19,10 +19,10 @@ decode_results cmd;
 //int ledg = 12;
 //int io = 10;
 //int a,b,c,d,e,f;
-//unsigned long starttime,endtime, duration,x; 
+//unsigned long starttime,endtime, duration,x;
 
 void setup() {
-//  Wire.begin(); 
+//  Wire.begin();
   Serial.begin(9600);
 //  pinMode(ledr,OUTPUT);
 //  pinMode(ledg,OUTPUT);
@@ -31,12 +31,13 @@ void setup() {
 //  digitalWrite(ledr, 1);
 //  delay(500);
 //  digitalWrite(ledr,0);
-digitalWrite(io,HIGH);
+//digitalWrite(io,HIGH);
+digitalWrite(io,LOW);
 IR.enableIRIn();
-  delay(500);
-  
+  delay(7000);
+  state=0;
 }
-int count =0; 
+int count =0;
 void loop() {
 // starttime = millis();
 
@@ -51,10 +52,10 @@ void loop() {
 //  Serial.println(state);
   digitalWrite(io,state);
 
-  
-//  Serial.print("IO STATE :");
-//  Serial.println(digitalRead(io));
-  
+ 
+  Serial.print("IO STATE :");
+  Serial.println(digitalRead(io));
+ 
   Serial.print("SLAVE Detected :  ");
   Serial.println(count);
    delay(400);
